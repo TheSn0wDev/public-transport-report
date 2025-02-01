@@ -1,21 +1,12 @@
-"use client";
+import MainContainer from "@/components/main-container";
+import { prisma } from "@/lib/prisma";
 
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
+export function fetchReports() {
+  return prisma.report.findMany().then((reports) => reports);
+}
 
-export default function Home() {
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("@/components/map"), {
-        loading: () => <p>A map is loading</p>,
-        ssr: false,
-      }),
-    []
-  );
+export default async function Home() {
+  const reports = await fetchReports();
 
-  return (
-    <div className="w-screen h-screen">
-      <Map posix={[4.79029, -75.69003]} />
-    </div>
-  );
+  return <MainContainer initialData={reports} />;
 }

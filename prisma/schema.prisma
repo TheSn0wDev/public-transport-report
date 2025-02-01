@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Report {
+  id        String     @id @default(cuid())
+  type      ReportType
+  infos     String?
+  location  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("reports")
+}
+
+enum ReportType {
+  ACCIDENT // Accident
+  DISRUPTION // Disruption (e.g. passenger fainting)
+  DELAY // Delay
+  HEAVY_TRAFFIC // Heavy traffic
+  DEGRADATION // Degradation (e.g. broken payment terminal)
+  EQUIPMENT_FAILURE // Equipment failure (e.g. bus breakdown)
+  EVENT // Event (e.g. concert)
+  LOST_FOUND_OBJECT // Lost or found object
+  WEATHER_CONDITIONS // Weather conditions (e.g. snow)
+  STRAY_ANIMALS // Stray animals
+  SECURITY // Security (e.g. pickpocketing)
+  POLICE // Police
+  FIRE_DEPARTMENT // Fire department
+  RESCUE // Rescue
+  WORKS // Works
+  STRIKE // Strike
+  CHECKPOINT // Checkpoint
+}
